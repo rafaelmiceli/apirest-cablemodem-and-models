@@ -56,8 +56,7 @@
       <template v-slot:cell(actions)="row">
         <b-button size="sm" @click="addToModels(row.item, row.index, $event.target)" variant="outline-success">
           +
-        </b-button>      
-
+        </b-button>
       </template>
       <template v-slot:row-details="row">
         <b-card>
@@ -84,104 +83,95 @@
 </template>
 
 <script>
-  import { apiHost } from '../config'
-  import axios from 'axios'
-  import VueSuggestion from 'vue-suggestion'
+import { apiHost } from '../config'
+import axios from 'axios'
 
-  export default {
-    
-  data() {
+export default {
+  data () {
     return {
       keyword: null,
-        items: [],
-        fields: [
-          { 
-            key: 'actions',
-            label: 'Actions'
-          },
-          { 
-            key: 'modem_macaddr', 
-            label: 'Modem Mac.Address', 
-            sortable: true, 
-            sortDirection: 'desc' 
-          },
-          { 
-            key: 'ipaddr', 
-            label: 'Ip Address', 
-            sortable: true,
-          },
-          { 
-            key: 'vsi_model', 
-            label: 'Model', 
-            sortable: true,
-          },
-          {
-            key: 'vsi_swver',
-            label: 'Version',
-            sortable: true
-          },{
-            key: 'vsi_vendor',
-            label: 'Vendor',
-            sortable: true
-          }
-        ],
-        totalRows: 1,
-        currentPage: 1,
-        perPage: 10,
-        pageOptions: [5, 10, 15],
-        sortBy: '',
-        sortDesc: false,
-        sortDirection: 'asc',
-        filter: null,
-        filterOn: [],
-        infoModal: {
-          id: 'info-modal',
-          title: '',
-          content: ''
+      items: [],
+      fields: [
+        {
+          key: 'actions',
+          label: 'Actions'
+        }, {
+          key: 'modem_macaddr',
+          label: 'Modem Mac.Address',
+          sortable: true,
+          sortDirection: 'desc'
+        }, {
+          key: 'ipaddr',
+          label: 'Ip Address',
+          sortable: true
+        }, {
+          key: 'vsi_model',
+          label: 'Model',
+          sortable: true
+        }, {
+          key: 'vsi_swver',
+          label: 'Version',
+          sortable: true
+        }, {
+          key: 'vsi_vendor',
+          label: 'Vendor',
+          sortable: true
         }
-      }
-    },
-    computed: {
-      sortOptions() {
-        // Create an options list from our fields
-        return this.fields
-          .filter(f => f.sortable)
-          .map(f => {
-            return { text: f.label, value: f.key }
-          })
-      },
-    },
-    mounted() {
-    },
-    methods: {
-      addToModels(item, index, target){
- 
-        axios.post(apiHost +'models',{
-          vendor:item.vsi_vendor,
-          name:item.vsi_model,
-          soft:item.vsi_swver
-        },{
-            headers:{
-            'Content-Type':'application/x-www-form-urlencoded'
-          }
-        }).then((result) => {
-          this.search()
-        })
-      },
-      onFiltered(filteredItems) {
-        // Trigger pagination to update the number of buttons/pages due to filtering
-        this.totalRows = filteredItems.length
-        this.currentPage = 1
-      },
-      clear() {
-        this.keyword = ''
-      },
-      search() {
-        axios.get(apiHost +'cablemodems?vendor='+this.keyword).then((result) => {
-          this.items = result.data
-          this.totalRows = this.items.length
-        })
+      ],
+      totalRows: 1,
+      currentPage: 1,
+      perPage: 10,
+      pageOptions: [5, 10, 15],
+      sortBy: '',
+      sortDesc: false,
+      sortDirection: 'asc',
+      filter: null,
+      filterOn: [],
+      infoModal: {
+        id: 'info-modal',
+        title: '',
+        content: ''
       }
     }
+  },
+  computed: {
+    sortOptions () {
+      // Create an options list from our fields
+      return this.fields
+        .filter(f => f.sortable)
+        .map(f => {
+          return { text: f.label, value: f.key }
+        })
+    }
+  },
+  methods: {
+    addToModels (item, index, target) {
+      axios.post(apiHost + 'models', {
+        vendor: item.vsi_vendor,
+        name: item.vsi_model,
+        soft: item.vsi_swver
+      }, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then((result) => {
+        this.search()
+      })
+    },
+    onFiltered (filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
+    },
+    clear () {
+      this.keyword = ''
+    },
+    search () {
+      axios.get(apiHost + 'cablemodems?vendor=' + this.keyword).then((result) => {
+        this.items = result.data
+        this.totalRows = this.items.length
+      })
+    }
   }
+}
 </script>

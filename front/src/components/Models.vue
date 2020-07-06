@@ -75,69 +75,68 @@
 </template>
 
 <script>
-  import { apiHost } from '../config'
-  import axios from 'axios'
-  export default {
-    data() {
-      return {
-        items: [],
-        fields: [
-          { 
-            key: 'vendor', 
-            label: 'Vendor', 
-            sortable: true, 
-            sortDirection: 'desc' 
-          },
-          { 
-            key: 'name', 
-            label: 'Name', 
-            sortable: true,
-          },
-          {
-            key: 'soft',
-            label: 'Version',
-            sortable: true
-          }
-        ],
-        totalRows: 1,
-        currentPage: 1,
-        perPage: 10,
-        pageOptions: [5, 10, 15],
-        sortBy: '',
-        sortDesc: false,
-        sortDirection: 'asc',
-        filter: null,
-        filterOn: [],
-        infoModal: {
-          id: 'info-modal',
-          title: '',
-          content: ''
+import { apiHost } from '../config'
+import axios from 'axios'
+
+export default {
+  data () {
+    return {
+      items: [],
+      fields: [
+        {
+          key: 'vendor',
+          label: 'Vendor',
+          sortable: true,
+          sortDirection: 'desc'
+        }, {
+          key: 'name',
+          label: 'Name',
+          sortable: true
+        }, {
+          key: 'soft',
+          label: 'Version',
+          sortable: true
         }
-      }
-    },
-    computed: {
-      sortOptions() {
-        // Create an options list from our fields
-        return this.fields
-          .filter(f => f.sortable)
-          .map(f => {
-            return { text: f.label, value: f.key }
-          })
-      }
-    },
-    mounted() {
-      // Set the initial number of items
-      axios.get(apiHost +'models').then((result) => {
-        this.items = result.data.models
-        this.totalRows = this.items.length
-      })
-    },
-    methods: {
-      onFiltered(filteredItems) {
-        // Trigger pagination to update the number of buttons/pages due to filtering
-        this.totalRows = filteredItems.length
-        this.currentPage = 1
+      ],
+      totalRows: 1,
+      currentPage: 1,
+      perPage: 10,
+      pageOptions: [5, 10, 15],
+      sortBy: '',
+      sortDesc: false,
+      sortDirection: 'asc',
+      filter: null,
+      filterOn: [],
+      infoModal: {
+        id: 'info-modal',
+        title: '',
+        content: ''
       }
     }
+  },
+  computed: {
+    sortOptions () {
+      // Create an options list from our fields
+      return this.fields
+        .filter(f => f.sortable)
+        .map(f => {
+          return { text: f.label, value: f.key }
+        })
+    }
+  },
+  mounted () {
+    // Set the initial number of items
+    axios.get(apiHost + 'models').then((result) => {
+      this.items = result.data.models
+      this.totalRows = this.items.length
+    })
+  },
+  methods: {
+    onFiltered (filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
+    }
   }
+}
 </script>

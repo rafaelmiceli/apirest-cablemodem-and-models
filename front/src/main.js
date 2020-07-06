@@ -18,5 +18,3 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
-
-Vue.http.options.root = 'http://localhost:8002/';
